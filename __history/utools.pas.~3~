@@ -1,0 +1,61 @@
+unit utools;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TForm3 = class(TForm)
+    GroupBox1: TGroupBox;
+    ListBox1: TListBox;
+    Label1: TLabel;
+    ComboBox1: TComboBox;
+    LabeledEdit1: TLabeledEdit;
+    LabeledEdit2: TLabeledEdit;
+    LabeledEdit3: TLabeledEdit;
+    LabeledEdit4: TLabeledEdit;
+    StaticText1: TStaticText;
+    Image1: TImage;
+    Label2: TLabel;
+    Label3: TLabel;
+    Image2: TImage;
+    GroupBox2: TGroupBox;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+
+implementation
+
+{$R *.dfm}
+
+uses ufarseer2;
+
+procedure TForm3.FormShow(Sender: TObject);
+var i,k:integer;
+begin
+  ListBox1.Clear;
+  k:=length(objects)-1;
+  for i:=0 to k do
+  begin
+    case objects[i].objtp
+    4:onm:='Точка';
+    5:onm:='Отрезок';
+    6:onm:='Прямоугольник';
+    7:onm:='Эллипс';
+    end;
+    ListBox1.Items.Add(inttostr(i)+') '+onm);
+  end;
+end;
+
+end.

@@ -1,0 +1,123 @@
+unit utools;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TForm3 = class(TForm)
+    GroupBox1: TGroupBox;
+    ListBox1: TListBox;
+    Label1: TLabel;
+    ComboBox1: TComboBox;
+    ex1: TLabeledEdit;
+    ex2: TLabeledEdit;
+    ey1: TLabeledEdit;
+    ey2: TLabeledEdit;
+    StaticText1: TStaticText;
+    ic1: TImage;
+    Label2: TLabel;
+    Label3: TLabel;
+    ic2: TImage;
+    GroupBox2: TGroupBox;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Timer1: TTimer;
+    ColorDialog1: TColorDialog;
+    ColorDialog2: TColorDialog;
+    procedure FormShow(Sender: TObject);
+    procedure ShowSObjInfo;
+    procedure ListBox1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure ic1Click(Sender: TObject);
+    procedure ic2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+  iclr1,iclr2:TColor;
+
+
+implementation
+
+{$R *.dfm}
+
+uses ufarseer2;
+
+procedure TForm3.FormShow(Sender: TObject);
+var i,k:integer; onm:string;
+begin
+  ListBox1.Clear;
+  k:=length(objects)-1;
+  for i:=0 to k do
+  begin
+    case objects[i].objtp of
+    4:onm:='Точка';
+    5:onm:='Отрезок';
+    6:onm:='Прямоугольник';
+    7:onm:='Эллипс';
+    end;
+    ListBox1.Items.Add(inttostr(i)+') '+onm);
+  end;
+end;
+
+procedure Tform3.ShowSObjInfo;
+begin
+  //выводим информацию о выбранном объекте
+  with tempobj do
+  begin
+    case objtp of
+    4:combobox1.itemindex:=0;
+    5:combobox1.itemindex:=1;
+    6:combobox1.itemindex:=2;
+    7:combobox1.itemindex:=3;
+    end;
+    ex1.Text:=floattostr(x1);
+    ex2.Text:=floattostr(x2);
+    ey1.Text:=floattostr(y1);
+    ey2.Text:=floattostr(y2);
+    iclr1:=color1;
+    iclr2:=color2;
+  end;
+end;
+
+procedure TForm3.Timer1Timer(Sender: TObject);
+begin
+  if form3.Visible=true then
+  begin
+    ic1.Canvas.Pen.Color:=clBlack;
+    ic1.Canvas.Brush.Color:=iclr1;
+    ic1.Canvas.Rectangle(0,0,ic1.Width,ic1.Height);
+    ic2.Canvas.Pen.Color:=clBlack;
+    ic2.Canvas.Brush.Color:=iclr2;
+    ic2.Canvas.Rectangle(0,0,ic2.Width,ic2.Height);
+  end;
+end;
+
+procedure TForm3.ic1Click(Sender: TObject);
+begin
+  if ColorDialog1.Execute then iclr1:=ColorDialog1.Color;
+end;
+
+procedure TForm3.ic2Click(Sender: TObject);
+begin
+  if ColorDialog1.Execute then iclr2:=ColorDialog1.Color;
+end;
+
+procedure TForm3.ListBox1Click(Sender: TObject);
+begin
+  try
+    selobj:=ListBox1.ItemIndex;
+    tempobj:=objects[selobj];
+    ShowSObjInfo;
+  except end;
+end;
+
+end.
