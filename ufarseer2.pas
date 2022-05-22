@@ -66,6 +66,7 @@ type
     CheckBox1: TCheckBox;
     SpeedButton17: TSpeedButton;
     SpeedButton18: TSpeedButton;
+    SpeedButton19: TSpeedButton;
     procedure showinputform(msg:string;
                             usedef,up,down:boolean;def1,def2,
                             ttl1,ttl2:string);
@@ -108,6 +109,7 @@ type
     procedure SpeedButton16Click(Sender: TObject);
     procedure SpeedButton17Click(Sender: TObject);
     procedure SpeedButton18Click(Sender: TObject);
+    procedure SpeedButton19Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -158,6 +160,14 @@ begin
   result:=sqrt(sqr(dx*sx)+sqr(dy*sy));
 end;
 
+
+function tfastdist(x1,y1,x2,y2:real):real;
+//расчет пиксельного рассто€ни€
+begin
+  result:=sqrt(sqr(extended(x2-x1))+sqr(extended(y2-y1)));
+end;
+
+
 function autogetdist(x1,y1,x2,y2:integer):real;
 //считает рассто€ние на основе попиксельного анализа
 var a,b,fx,fy,fx0,fy0:real;
@@ -168,63 +178,76 @@ var a,b,fx,fy,fx0,fy0:real;
     clr1,clr2:TColor;
     detx:array of integer;
     dety:array of integer;
+
+    crawlerx,crawlery:integer;
+    guessx,guessy:integer;
+    targx,targy:integer;
+    ctx,cty:integer;
+    cd:real;
+    i,j,minx,miny:integer;
+    crmind:real;
+    ic:integer;
+    cl:string;
 begin
 
-  if x1<>x2 then
-  begin
-    if x1>x2 then
-    begin
-      wx1:=x2;
-      wx2:=x1;
-      wy1:=y2;
-      wy2:=y1;
-    end;
-    if x1<x2 then
-    begin
-      wx1:=x1;
-      wx2:=x2;
-      wy1:=y1;
-      wy2:=y2;
-    end;
-  end;
+  crawlerx:=x1;
+  crawlery:=y1;
+  targx:=x2;
+  targy:=y2;
 
-  if wx1=wx2 then
-  begin
-    a:=(wx2-wx1)/(wy2-wy1);
-    b:=(wx1-(wx2-wx1)/(wy2-wy1)*wy1);
-    x1x2:=true;
-  end
-  else
-  begin
-    a:=(wy2-wy1)/(wx2-wx1);
-    b:=(wy1-(wy2-wy1)/(wx2-wx1)*wx1);
-    x1x2:=false;
-  end;
-
-
+  crmind:=0;
+  minx:=0;
+  miny:=0;
   with pic.Canvas do
   begin
 
-    clr1:=Pixels[wx1,wy1];
-    clr2:=Pixels[wx1,wy1];
-    if not x1x2 then
-    begin
-      fx:=wx1;
-      fy:=wy1;
-    end
-    else
-    begin
-      fx:=wy1;
-      fy:=wx1;
-    end;
+    clr1:=Pixels[crawlerx,crawlery];
+    clr2:=Pixels[crawlerx,crawlery];
 
     setlength(detx,0);
     setlength(dety,0);
 
-    while ((fx<wx2) and (x1x2=false)) or ((fx<wy2) and (x1x2=true)) do
+    while not ((crawlerx=targx) and (crawlery=targy)) do
     begin
+
+      ic:=0;
+      cl:='';
+
+      for j:=crawlery-1 to crawlery+1 do
+      begin
+        for i:=crawlerx-1 to crawlerx+1 do
+        begin
+          if (i=crawlerx-1) and (j=crawlery-1) then
+          begin
+            minx:=i;
+            miny:=i;
+            crmind:=tfastdist(crawlerx,crawlery,targx,targy);
+            //cl:=cl+'Crawler reset'+#13#10+'Coords: '+inttostr(crawlerx)+';'+inttostr(crawlery)+#13#10+' Starting mind = '+floattostr(crmind)+#13#10#13#10;
+          end;
+
+          cd:=tfastdist(i,j,targx,targy);
+          if cd<crmind then
+          begin
+            crmind:=cd;
+            minx:=i;
+            miny:=j;
+          end;
+          //cl:=cl+(inttostr(ic)+') tx='+inttostr(i)+' yy='+inttostr(j)+' d='+floattostr(cd)+' -> md='+floattostr(crmind))+#13#10;
+
+          inc(ic);
+        end;
+      end;
+
+      crawlerx:=minx;
+      crawlery:=miny;
+
+      //ShowMessage(cl+#13#10#13#10+'x='+inttostr(crawlerx)+' y='+inttostr(crawlery)+' tx='+inttostr(targx)+' ty='+inttostr(targy));
+
+      fx:=crawlerx;
+      fy:=crawlery;
+
       clr2:=clr1;
-      fy:=a*fx+b;
+
       clr1:=Pixels[round(fx),round(fy)];
       dr:=abs(GetRValue(clr1)-GetRValue(clr2));
       dg:=abs(GetGValue(clr1)-GetGValue(clr2));
@@ -247,14 +270,70 @@ begin
 
   end;
 
-  ox1:=detx[0];
-  oy1:=dety[0];
-  ox2:=detx[length(detx)-1];
-  oy2:=dety[length(dety)-1];
 
-  result:=getdist(ox1-ox2,oy1-oy2,skx,sky);
+  if (length(detx)>1) and (length(dety)>1) then
+  begin
+    ox1:=detx[0];
+    oy1:=dety[0];
+    ox2:=detx[length(detx)-1];
+    oy2:=dety[length(dety)-1];
+
+    setlength(sizedots,length(sizedots)+1);
+    sizedots[length(sizedots)-1].x:=ox1;
+    sizedots[length(sizedots)-1].y:=oy1;
+    setlength(sizedots,length(sizedots)+1);
+    sizedots[length(sizedots)-1].x:=ox2;
+    sizedots[length(sizedots)-1].y:=oy2;
+
+    result:=getdist(ox1-ox2,oy1-oy2,skx,sky);
+  end
+  else
+  begin
+    result:=getdist(x1-x2,y1-y2,skx,sky);
+  end;
 
 end;
+
+
+procedure packagegetdist(x1,y1,x2,y2,x3,y3,x4,y4:integer);
+var i,ns:integer;
+    cx,cy,d,px,py,dx1,dx2,dy1,dy2,delx,dely:real;
+    cx1,cx2,cy1,cy2:integer;
+    dstc,dsta:real;
+begin
+  d:=((x1-x2)*(y3-y4)) - ((y1-y2)*(x3-x4));
+  if (d<>0) then
+  begin
+    ns:=round((abs(y4-y3)+abs(x4-x3))/2);
+    px:=(((x1*y2-y1*x2)*(x3-x4))-((x1-x2)*(x3*y4-y3*x4)))/d;
+    py:=(((x1*y2-y1*x2)*(y3-y4))-((y1-y2)*(x3*y4-y3*x4)))/d;
+    dx1:=abs(px-x1);
+    dx2:=abs(x2-px);
+    dy1:=abs(py-y1);
+    dy2:=abs(y2-py);
+    delx:=(x4-x3)/ns;
+    dely:=(y4-y3)/ns;
+    dsta:=0;
+    for i:=0 to (ns-1) do
+    begin
+      cx:=x3+delx*i;
+      cy:=y3+dely*i;
+      cx1:=round(cx-dx1); cx2:=round(cx+dx2);
+      cy1:=round(cy-dy1); cy2:=round(cy+dy2);
+      dstc:=autogetdist(cx1,cy1,cx2,cy2);
+      setlength(sizedots,length(sizedots)+1);
+      sizedots[length(sizedots)-1].x:=cx1;
+      sizedots[length(sizedots)-1].y:=cy1;
+      setlength(sizedots,length(sizedots)+1);
+      sizedots[length(sizedots)-1].x:=cx2;
+      sizedots[length(sizedots)-1].y:=cy2;
+      dsta:=dsta+dstc;
+    end;
+    Form1.Memo1.Lines.Add(floattostr(dsta/ns));
+  end;
+
+end;
+
 
 function getangle3(a,b,c:clickdot):real;
 //считает угол по трем точкам
@@ -632,6 +711,13 @@ begin
   SetLength(clickdots,0);
 end;
 
+procedure TForm1.SpeedButton19Click(Sender: TObject);
+begin
+  mode:=9;
+  phase:=0;
+  SetLength(clickdots,0);
+end;
+
 procedure TForm1.SpeedButton1Click(Sender: TObject);
 begin
   mode:=1;
@@ -867,6 +953,36 @@ begin
     end;
   end;
 
+  if mode=9 then
+  begin
+    if phase=0 then
+    begin
+      StatusBar1.Panels[1].Text:='ѕакетное измерение длины. ”кажите первую точку линии измерени€.'
+    end;
+    if phase=1 then
+    begin
+      StatusBar1.Panels[1].Text:='ѕакетное измерение длины. ”кажите вторую точку линии измерени€.'
+    end;
+    if phase=2 then
+    begin
+      StatusBar1.Panels[1].Text:='ѕакетное измерение длины. ”кажите первую точку зоны измерени€.'
+    end;
+    if phase=3 then
+    begin
+      StatusBar1.Panels[1].Text:='ѕакетное измерение длины. ”кажите вторую точку зоны измерени€.'
+    end;
+    if phase=4 then
+    begin
+      mode:=0;
+      phase:=0;
+      packagegetdist(round(clickdots[0].x),round(clickdots[0].y),
+                     round(clickdots[1].x),round(clickdots[1].y),
+                     round(clickdots[2].x),round(clickdots[2].y),
+                     round(clickdots[3].x),round(clickdots[3].y));
+      SetLength(clickdots,0);
+    end;
+  end;
+
   //мен€ем цвет картинок в нижней части, отвечающих за выбор цвета
   with image2.Canvas do
   begin
@@ -1022,9 +1138,9 @@ begin
       end;
     end;
 
-    if (mode=2) or (mode=8) then
+    if (mode=2) or (mode=8) or (mode=9) then
     begin
-      if (phase=0) or (phase=1) then
+      if (phase=0) or (phase=1) or (phase=2) or (phase=3) then
       begin
         setlength(clickdots,length(clickdots)+1);
         clickdots[length(clickdots)-1].x:=mcx/scl+cx;

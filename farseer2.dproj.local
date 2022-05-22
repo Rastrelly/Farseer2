@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.430,C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Delphi\Farseer2\ufarseer2.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.883,=C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.793,C:\Delphi\Farseer2\utools.dfm=C:\Delphi\Farseer2\Unit3.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.253,C:\Delphi\Farseer2\farseer2.dproj=C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.141,=C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.253,C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Delphi\Farseer2\farseer2.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.793,C:\Delphi\Farseer2\Unit3.dfm=C:\Delphi\Farseer2\utools.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.610,C:\Delphi\Farseer2\uinput.pas=C:\Delphi\Farseer2\Unit2.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.983,E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\ustats.dfm=E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\Unit4.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.793,C:\Delphi\Farseer2\Unit3.pas=C:\Delphi\Farseer2\utools.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.430,C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Delphi\Farseer2\ufarseer2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.793,C:\Delphi\Farseer2\utools.pas=C:\Delphi\Farseer2\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.610,C:\Delphi\Farseer2\Unit2.dfm=C:\Delphi\Farseer2\uinput.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.430,C:\Delphi\Farseer2\ufarseer2.pas=C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.983,E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\Unit4.pas=E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\ustats.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.633,=E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.430,C:\Delphi\Farseer2\ufarseer2.dfm=C:\Users\rastr\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.610,C:\Delphi\Farseer2\Unit2.pas=C:\Delphi\Farseer2\uinput.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.983,E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\Unit4.dfm=E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\ustats.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.672,=C:\Delphi\Farseer2\Unit3.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.610,C:\Delphi\Farseer2\uinput.dfm=C:\Delphi\Farseer2\Unit2.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.912,=C:\Delphi\Farseer2\Unit2.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.983,E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\ustats.pas=E:\docs_reserve\!кафедра_приборо\dpl\2017\Farseer2\Unit4.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="ufarseer2.pas"/>
